@@ -47,7 +47,7 @@
             font-size: 18px;
             color: red;
         }
-        .table-container {
+        .table-container { 
             display: flex;
             flex-direction: column; /* Display tables in a column layout */
         }
