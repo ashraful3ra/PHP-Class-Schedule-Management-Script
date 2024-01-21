@@ -29,7 +29,7 @@
             text-align: left;
             border-bottom: 1px solid #ddd;
         }
-        th {
+        th { 
             background-color: #017a07;
             color: #fff;
         }
