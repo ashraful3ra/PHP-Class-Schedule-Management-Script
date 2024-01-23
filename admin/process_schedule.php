@@ -1,12 +1,13 @@
 <?php
 // Database configuration
-
+$host = 'localhost'; // Database host
+$dbname = 'data-class'; // Database name
+$username = 'root'; // Database username
+$password = ''; // Database password
 
 try {
     // Create a PDO database connection
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
-
-    // Set the PDO error mode to exception
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     // Retrieve form data
@@ -16,6 +17,7 @@ try {
     $batch_name = $_POST['batch_name'];
     $class_time = $_POST['class_time'];
     $class_date = $_POST['class_date'];
+    $class_topics = $_POST['class_topics']; // Add this line to retrieve class topics
 
     // Check if a similar record already exists
     $checkSql = "SELECT COUNT(*) FROM class_schedule
@@ -42,8 +44,8 @@ try {
     }
 
     // If no duplicate record found, proceed with inserting
-    $insertSql = "INSERT INTO class_schedule (course_name, class_no, instructor, batch_name, class_time, class_date)
-                  VALUES (:course_name, :class_no, :instructor, :batch_name, :class_time, :class_date)";
+    $insertSql = "INSERT INTO class_schedule (course_name, class_no, instructor, batch_name, class_time, class_date, class_topics)
+                  VALUES (:course_name, :class_no, :instructor, :batch_name, :class_time, :class_date, :class_topics)";
     $insertStmt = $pdo->prepare($insertSql);
     $insertStmt->bindParam(':course_name', $course_name);
     $insertStmt->bindParam(':class_no', $class_no);
@@ -51,6 +53,7 @@ try {
     $insertStmt->bindParam(':batch_name', $batch_name);
     $insertStmt->bindParam(':class_time', $class_time);
     $insertStmt->bindParam(':class_date', $class_date);
+    $insertStmt->bindParam(':class_topics', $class_topics); // Add this line to bind class topics
 
     // Execute the SQL statement
     $insertStmt->execute();
