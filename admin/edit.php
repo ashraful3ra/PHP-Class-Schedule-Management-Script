@@ -63,9 +63,9 @@
         <?php
         // Database configuration
         $host = 'localhost'; // Database host
-$dbname = 'data-class'; // Database name
-$username = 'root'; // Database username
-$password = ''; // Database password
+        $dbname = 'data-class'; // Database name
+        $username = 'root'; // Database username
+        $password = ''; // Database password
 
         try {
             // Create a PDO database connection
