@@ -83,17 +83,19 @@
                 $batch_name = $_POST['batch_name'];
                 $class_time = $_POST['class_time'];
                 $class_date = $_POST['class_date'];
+                $class_topics = isset($_POST['class_topics']) ? $_POST['class_topics'] : ''; // Added class_topics
 
                 // Add validation here if needed
 
-                // Update the existing record
+                // Update the existing record including class_topics
                 $updateSql = "UPDATE class_schedule
                               SET course_name = :course_name,
                                   class_no = :class_no,
                                   instructor = :instructor,
                                   batch_name = :batch_name,
                                   class_time = :class_time,
-                                  class_date = :class_date
+                                  class_date = :class_date,
+                                  class_topics = :class_topics
                               WHERE id = :id";
                 $updateStmt = $pdo->prepare($updateSql);
                 $updateStmt->bindParam(':course_name', $course_name);
@@ -102,6 +104,7 @@
                 $updateStmt->bindParam(':batch_name', $batch_name);
                 $updateStmt->bindParam(':class_time', $class_time);
                 $updateStmt->bindParam(':class_date', $class_date);
+                $updateStmt->bindParam(':class_topics', $class_topics); // Bind class_topics
                 $updateStmt->bindParam(':id', $recordId, PDO::PARAM_INT);
                 $updateStmt->execute();
 
@@ -171,9 +174,74 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="class_topics">Class Topics:</label>
+                            <input type="text" id="class_topics" name="class_topics" value="<?= $record['class_topics'] ?>">
+                        </div>
+
+                        <div class="form-group">
                             <input type="submit" value="Update">
                         </div>
                     </form>
+
+                    <script>
+                        // JavaScript code to show class topics based on selected class number
+                        document.addEventListener("DOMContentLoaded", function () {
+                            function showClassTopics() {
+                                var classNumberSelect = document.getElementById("class_number");
+                                var classTopicsInput = document.getElementById("class_topics");
+
+                                // Replace with your logic to map class numbers to topics
+                                var classTopicsMap = {
+                                    "Class 1": "Introduction to the Data Entry & Freelancing Career",
+                                    "Support Class 1": "Support Class 1 (Introduction to the Data Entry & Freelancing Career)",
+                                    "Class 2": "Social Media Marketing - SMM",
+                                    "Support Class 2": "Support Class 2 (Social Media Marketing - SMM)",
+                                    "Class 3": "Software or Tools for Data Entry",
+                                    "Support Class 3": "Support Class 3 (Software or Tools for Data Entry)",
+                                    "Class 4": "Data Entry and Web Research",
+                                    "Support Class 4": "Support Class 4 (Data Entry and Web Research)",
+                                    "Class 5": "Basic Lead Generation",
+                                    "Support Class 5": "Support Class 5 (Basic Lead Generation)",
+                                    "Class 6": "Data Entry File Conversion",
+                                    "Support Class 6": "Support Class 6 (Data Entry File Conversion)",
+                                    "Class 7": "Payment Methods",
+                                    "Support Class 7": "Support Class 7 (Payment Methods)",
+                                    "Class 8": "Market Place in (Fiverr.com)",
+                                    "Support Class 8": "Support Class 8 (Market Place in (Fiverr.com)",
+                                    "Class 9": "Market Place Class Part - 02",
+                                    "Support Class 9": "Support Class 9 (Market Place Class Part - 02)",
+                                    "Class 10": "Success Guide",
+                                    "Support Class 10": "Support Class 10 (Success Guide)",
+                                    "Class 11": "Basic knowledge for portfolio",
+                                    "Support Class 11": "Support Class 11 (Basic knowledge for portfolio)",
+                                    "Class 12": "Course Feedback & Problem Solving",
+                                    "Support Class 12": "Support Class 12 (Course Feedback & Problem Solving)"
+                                };
+
+                                var selectedClassNumber = classNumberSelect.value;
+
+                                if (selectedClassNumber !== "") {
+                                    // Retrieve class topics based on the selected class number
+                                    var selectedClassTopics = classTopicsMap[selectedClassNumber];
+
+                                    if (selectedClassTopics) {
+                                        classTopicsInput.value = selectedClassTopics;
+                                    } else {
+                                        classTopicsInput.value = "";
+                                    }
+                                } else {
+                                    classTopicsInput.value = "";
+                                }
+                            }
+
+                            // Attach event listener to the class number select element
+                            var classNumberSelect = document.getElementById("class_number");
+                            classNumberSelect.addEventListener("change", showClassTopics);
+
+                            // Trigger the initial call to showClassTopics if a value is already selected
+                            showClassTopics();
+                        });
+                    </script>
                     <?php
                 } else {
                     echo 'Record not found.';
