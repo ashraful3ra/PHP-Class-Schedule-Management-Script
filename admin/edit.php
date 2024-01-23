@@ -12,7 +12,7 @@
             color: #333;
         }
         .container {
-            width: 400px;
+            width: 500px;
             margin: 0 auto;
             background-color: #fff;
             padding: 20px;
