@@ -133,6 +133,16 @@
         .filter-form select {
             min-width: 200px; /* Adjust as needed */
         }
+        .tooltip {
+            position: absolute;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            white-space: nowrap;
+            z-index: 999;
+        }
     </style>
 </head>
 <body>
@@ -203,13 +213,14 @@
                             $isToday = ($scheduleDate == $currentDate);
         
                             // Apply red and bold styles if it's today's date
+                            $classTopic = $schedule['class_topics'];
                             ?>
                             <tr <?php if ($isToday) echo 'style="color: red; font-weight: bold;"'; ?>>
                                 <td><?php echo $counter; ?></td> <!-- Display the serial number -->
                                 <td><?php echo $schedule['course_name']; ?></td>
                                 <td><?php echo $schedule['batch_name']; ?></td>
                                 <td><?php echo $schedule['instructor']; ?></td>
-                                <td><?php echo $schedule['class_no']; ?></td>
+                                <td class="class-number" data-topic="<?php echo htmlspecialchars($classTopic); ?>"><?php echo $schedule['class_no']; ?></td>
                                 <td><?php echo $schedule['formatted_class_time']; ?></td>
                                 <td><?php echo $schedule['formatted_class_date']; ?></td>
                                 <td><?php echo $schedule['class_day']; ?></td>
@@ -315,13 +326,14 @@
                         $counter = 1;
                         foreach ($finishedClassSchedules as $schedule) :
                             // Display finished class records
+                            $classTopic = $schedule['class_topics'];
                             ?>
                             <tr>
                                 <td><?php echo $counter; ?></td>
                                 <td><?php echo $schedule['course_name']; ?></td>
                                 <td><?php echo $schedule['batch_name']; ?></td>
                                 <td><?php echo $schedule['instructor']; ?></td>
-                                <td><?php echo $schedule['class_no']; ?></td>
+                                <td class="class-number" data-topic="<?php echo htmlspecialchars($classTopic); ?>"><?php echo $schedule['class_no']; ?></td>
                                 <td><?php echo $schedule['formatted_class_time']; ?></td>
                                 <td><?php echo $schedule['formatted_class_date']; ?></td>
                                 <td><?php echo $schedule['class_day']; ?></td>
@@ -348,6 +360,53 @@
             </div>
         </div>
     </div>
+
+    <script>
+    // JavaScript code to display class topic tooltip
+    document.addEventListener("DOMContentLoaded", function () {
+        function showClassTopicTooltip(event) {
+            const classNumberCell = event.currentTarget;
+            const classTopic = classNumberCell.getAttribute("data-topic");
+
+            // Check if the cell has a class topic
+            if (classTopic) {
+                const tooltip = document.createElement("div");
+                tooltip.className = "tooltip";
+                tooltip.textContent = classTopic;
+
+                classNumberCell.appendChild(tooltip);
+
+                // Position the tooltip relative to the class number cell
+                const cellRect = classNumberCell.getBoundingClientRect();
+                const tooltipRect = tooltip.getBoundingClientRect();
+
+                tooltip.style.top = cellRect.top + cellRect.height + "px";
+                tooltip.style.left = cellRect.left + cellRect.width / 2 - tooltipRect.width / 2 + "px";
+
+                // Show the tooltip
+                tooltip.style.display = "block";
+
+                // Remove the tooltip when the mouse leaves the cell
+                classNumberCell.addEventListener("mouseleave", function () {
+                    tooltip.remove();
+                });
+            }
+        }
+
+        // Attach event listeners to class number cells for hovering (Upcoming Classes)
+        const upcomingClassNumberCells = document.querySelectorAll(".upcoming-classes tbody td.class-number");
+        upcomingClassNumberCells.forEach((cell) => {
+            cell.addEventListener("mouseenter", showClassTopicTooltip);
+        });
+
+        // Attach event listeners to class number cells for hovering (Finished Classes)
+        const finishedClassNumberCells = document.querySelectorAll(".finished-classes tbody td.class-number");
+        finishedClassNumberCells.forEach((cell) => {
+            cell.addEventListener("mouseenter", showClassTopicTooltip);
+        });
+    });
+</script>
+
 
     <script>
         // JavaScript code to update the live time with seconds
