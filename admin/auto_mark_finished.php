@@ -1,17 +1,8 @@
 <?php
-// Database configuration
-$host = 'localhost'; // Database host
-$dbname = 'data-class'; // Database name
-$username = 'root'; // Database username
-$password = ''; // Database password
+// Include the database connection file
+include '../db.php';
 
 try {
-    // Create a PDO database connection
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
-
-    // Set the PDO error mode to exception
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
     // Calculate the current time
     $currentTime = date('H:i:s');
 

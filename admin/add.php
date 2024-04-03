@@ -57,18 +57,20 @@
         <label for="batch_name">Course Name:</label>
             <select id="course_select" name="course_select">
                 <option value="">Select Course</option>
-                <option value="CPA Marketing Premium Course">CPA Marketing Premium Course</option>
-                <option value="Professional Data Entry">Professional Data Entry</option>
+                <option value="Freelancing with Digital Marketing">Freelancing with Digital Marketing</option>
             </select>
             
             <label for="instructor_name">Instructor Name:</label>
             <select id="instructor" name="instructor">
                 <option value="">Select Instructor</option>
+                <option value="Yousuf Sadi">Yousuf Sadi</option>
+                <option value="Mahidul Haque">Mahidul Haque</option>
+                <option value="SM Rokunuzzaman">SM Rokunuzzaman</option>
                 <option value="Ashraful Islam">Ashraful Islam</option>
+                <option value="Jahidul Islam">Jahidul Islam</option>
                 <option value="Sadiqul Islam">Sadiqul Islam</option>
                 <option value="Hasibur Rahman">Hasibur Rahman</option>
                 <option value="Nazmul Islam">Nazmul Islam</option>
-                <option value="Reyad Naj">Reyad Naj</option>
             </select>
             
             
@@ -81,27 +83,16 @@
             <option value="Class 1">Class 1</option>
             <option value="Support Class 1">Support Class 1</option>
             <option value="Class 2">Class 2</option>
-            <option value="Support Class 2">Support Class 2</option>
             <option value="Class 3">Class 3</option>
-            <option value="Support Class 3">Support Class 3</option>
             <option value="Class 4">Class 4</option>
-            <option value="Support Class 4">Support Class 4</option>
             <option value="Class 5">Class 5</option>
-            <option value="Support Class 5">Support Class 5</option>
             <option value="Class 6">Class 6</option>
-            <option value="Support Class 6">Support Class 6</option>
             <option value="Class 7">Class 7</option>
-            <option value="Support Class 7">Support Class 7</option>
             <option value="Class 8">Class 8</option>
-            <option value="Support Class 8">Support Class 8</option>
             <option value="Class 9">Class 9</option>
-            <option value="Support Class 9">Support Class 9</option>
             <option value="Class 10">Class 10</option>
-            <option value="Support Class 10">Support Class 10</option>
             <option value="Class 11">Class 11</option>
-            <option value="Support Class 11">Support Class 11</option>
             <option value="Class 12">Class 12</option>
-            <option value="Support Class 12">Support Class 12</option>
         </select>
 
         <div id="class_topics_div" style="display: none;">
@@ -131,30 +122,19 @@
 
                 // Replace with your logic to map class numbers to topics
                 var classTopicsMap = {
-                    "Class 1": "Introduction to the Data Entry & Freelancing Career",
-                    "Support Class 1": "Support Class 1 (Introduction to the Data Entry & Freelancing Career)",
-                    "Class 2": "Social Media Marketing - SMM",
-                    "Support Class 2": "Support Class 2 (Social Media Marketing - SMM)",
-                    "Class 3": "Software or Tools for Data Entry",
-                    "Support Class 3": "Support Class 3 (Software or Tools for Data Entry)",
-                    "Class 4": "Data Entry and Web Research",
-                    "Support Class 4": "Support Class 4 (Data Entry and Web Research)",
-                    "Class 5": "Basic Lead Generation",
-                    "Support Class 5": "Support Class 5 (Basic Lead Generation)",
-                    "Class 6": "Data Entry File Conversion",
-                    "Support Class 6": "Support Class 6 (Data Entry File Conversion)",
-                    "Class 7": "Payment Methods",
-                    "Support Class 7": "Support Class 7 (Payment Methods)",
-                    "Class 8": "Market Place in (Fiverr.com)",
-                    "Support Class 8": "Support Class 8 (Market Place in (Fiverr.com)",
-                    "Class 9": "Market Place Class Part - 02",
-                    "Support Class 9": "Support Class 9 (Market Place Class Part - 02)",
-                    "Class 10": "Success Guide",
-                    "Support Class 10": "Support Class 10 (Success Guide)",
-                    "Class 11": "Basic knowledge for portfolio",
-                    "Support Class 11": "Support Class 11 (Basic knowledge for portfolio)",
-                    "Class 12": "Course Feedback & Problem Solving",
-                    "Support Class 12": "Support Class 12 (Course Feedback & Problem Solving)",
+                    "Class 1": "Introduction, website joining, Facebook page creation, and details about the course module.",
+                    "Support Class 1": "Support Class 1 (Introduction, website joining, Facebook page creation, and details about the course module.)",
+                    "Class 2": "Design with Canva Introduction of Tools, Size, Brand colors, and Template.",
+                    "Class 3": "Social Media Setup, Facebook Business page setup, Group setup.",
+                    "Class 4": "Video Editing, CapCut",
+                    "Class 5": "Video Marketing",
+                    "Class 6": "Marketplace - Fiverr, Market Research",
+                    "Class 7": "Gig Create and Setup",
+                    "Class 8": "Ads Management, Facebook, and Instagram Ads",
+                    "Class 9": "Payment Gateway, Payoneer",
+                    "Class 10": "Search Engin Optimization (SEO), Introduction",
+                    "Class 11": "On Page SEO",
+                    "Class 12": "Off Page SEO",
 
                     
                 };

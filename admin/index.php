@@ -30,7 +30,7 @@
             border-bottom: 1px solid #ddd;
         }
         th {
-            background-color: #017a07;
+            background-color: #a90f0f;
             color: #fff;
         }
         .current-time-container {
@@ -72,10 +72,10 @@
         }
         .action-button {
             padding: 5px 10px;
-            border: 1px solid #017a07;
+            border: 1px solid #a90f0f;
             border-radius: 5px;
             text-decoration: none;
-            color: #017a07;
+            color: #a90f0f;
             cursor: pointer;
         }
         .action-button.delete {
@@ -88,24 +88,24 @@
         }
         .pagination a {
             text-decoration: none;
-            border: 1px solid #017a07;
+            border: 1px solid #a90f0f;
             padding: 5px 10px;
             border-radius: 5px;
-            color: #017a07;
+            color: #a90f0f;
             margin-right: 5px;
             cursor: pointer;
         }
         .pagination a:hover {
-            background-color: #017a07;
+            background-color: #a90f0f;
             color: #fff;
         }
     </style>
 </head>
 <body>
-    <h2>DATA Entry Class Schedule</h2>
+    <h2>DigiLearner Class Schedule</h2>
     <div class="pagination">
     <center>
-        <a href="https://data.upspot.org/" target="_blank"><< Back Home</a>
+        <a href="/" target="_blank"><< Back Home</a>
         <br><br>
         <a href="add.php">Add New Class Schedule</a>
     </center>
@@ -136,11 +136,7 @@
                 </thead>
                 <tbody>
                     <?php
-                    // Database configuration
-                    $host = 'localhost'; // Database host
-$dbname = 'data-class'; // Database name
-$username = 'root'; // Database username
-$password = ''; // Database password
+                    include '../db.php';
 
                     try {
                         // Create a PDO database connection
@@ -155,7 +151,19 @@ $password = ''; // Database password
                         $upcomingOffset = ($upcomingPage - 1) * $upcomingPerPage;
 
                         // Query to retrieve upcoming class schedule data with pagination, ordered by id in descending order
-                        $sql = "SELECT *, DATE_FORMAT(class_date, '%d %M, %Y') as formatted_class_date, DATE_FORMAT(class_time, '%h:%i %p') as formatted_class_time, DATE_FORMAT(class_date, '%W') as class_day FROM class_schedule WHERE is_finished = 0 ORDER BY id DESC LIMIT :limit OFFSET :offset";
+                        $sql = "SELECT *,
+               DATE_FORMAT(class_date, '%d %M, %Y') as formatted_class_date,
+               DATE_FORMAT(class_time, '%h:%i %p') as formatted_class_time,
+               DATE_FORMAT(class_date, '%W') as class_day,
+               CASE 
+                   WHEN class_date = CURDATE() THEN 1
+                   ELSE 0
+               END AS is_today
+        FROM class_schedule 
+        WHERE is_finished = 0 
+        ORDER BY is_today DESC, class_date ASC, class_time ASC 
+        LIMIT :limit OFFSET :offset";
+
                         $stmt = $pdo->prepare($sql);
                         $stmt->bindParam(':limit', $upcomingPerPage, PDO::PARAM_INT);
                         $stmt->bindParam(':offset', $upcomingOffset, PDO::PARAM_INT);

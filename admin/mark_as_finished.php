@@ -1,9 +1,5 @@
 <?php
-// Database configuration
-$host = 'localhost'; // Database host
-$dbname = 'data-class'; // Database name
-$username = 'root'; // Database username
-$password = ''; // Database password
+include '../db.php';
 
 try {
     // Create a PDO database connection

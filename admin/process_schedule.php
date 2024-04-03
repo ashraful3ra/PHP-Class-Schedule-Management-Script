@@ -1,9 +1,5 @@
 <?php
-// Database configuration
-$host = 'localhost'; // Database host
-$dbname = 'data-class'; // Database name
-$username = 'root'; // Database username
-$password = ''; // Database password
+include '../db.php';
 
 try {
     // Create a PDO database connection
@@ -25,7 +21,7 @@ try {
                  AND batch_name = :batch_name
                  AND class_time = :class_time
                  AND class_no = :class_no
-                 AND class_no = :instructor
+                 AND instructor = :instructor
                  AND class_date = :class_date";
     $checkStmt = $pdo->prepare($checkSql);
     $checkStmt->bindParam(':course_name', $course_name);
@@ -48,12 +44,12 @@ try {
                   VALUES (:course_name, :class_no, :instructor, :batch_name, :class_time, :class_date, :class_topics)";
     $insertStmt = $pdo->prepare($insertSql);
     $insertStmt->bindParam(':course_name', $course_name);
-    $insertStmt->bindParam(':class_no', $class_no);
+    $insertStmt->bindParam(':class_no', $class_no); // Bind class number parameter
     $insertStmt->bindParam(':instructor', $instructor);
     $insertStmt->bindParam(':batch_name', $batch_name);
     $insertStmt->bindParam(':class_time', $class_time);
     $insertStmt->bindParam(':class_date', $class_date);
-    $insertStmt->bindParam(':class_topics', $class_topics); // Add this line to bind class topics
+    $insertStmt->bindParam(':class_topics', $class_topics); // Bind class topics parameter
 
     // Execute the SQL statement
     $insertStmt->execute();

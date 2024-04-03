@@ -43,7 +43,7 @@
         input[type="submit"] {
             width: 100%; /* Full width submit button */
             padding: 10px 20px;
-            background-color: #017a07;
+            background-color: #a90f0f;
             color: #fff;
             border: none;
             border-radius: 5px;
@@ -61,11 +61,7 @@
     <h2>Edit Class Schedule</h2>
     <div class="container">
         <?php
-        // Database configuration
-        $host = 'localhost'; // Database host
-        $dbname = 'data-class'; // Database name
-        $username = 'root'; // Database username
-        $password = ''; // Database password
+        include '../db.php';
 
         try {
             // Create a PDO database connection

@@ -2,9 +2,10 @@
 <html>
 <head>
     <title>Class Schedule</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;700&display=swap">
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Hind Siliguri', Arial, sans-serif;
             background-color: #f0f0f0;
             text-align: center;
         }
@@ -30,7 +31,7 @@
             border-bottom: 1px solid #ddd;
         }
         th { 
-            background-color: #017a07;
+            background-color: #a90f0f;
             color: #fff;
         }
         .current-time-container {
@@ -72,10 +73,10 @@
         }
         .action-button {
             padding: 5px 10px;
-            border: 1px solid #017a07;
+            border: 1px solid #a90f0f;
             border-radius: 5px;
             text-decoration: none;
-            color: #017a07;
+            color: #a90f0f;
             cursor: pointer;
         }
         .action-button.delete {
@@ -88,15 +89,15 @@
         }
         .pagination a {
             text-decoration: none;
-            border: 1px solid #017a07;
+            border: 1px solid #a90f0f;
             padding: 5px 10px;
             border-radius: 5px;
-            color: #017a07;
+            color: #a90f0f;
             margin-right: 5px;
             cursor: pointer;
         }
         .pagination a:hover {
-            background-color: #017a07;
+            background-color: #a90f0f;
             color: #fff;
         }
         /* Styles for Filter Form */
@@ -109,24 +110,24 @@
         .filter-form input[type="submit"] {
             padding: 8px 15px;
             margin-right: 10px;
-            border: 1px solid #017a07;
+            border: 1px solid #a90f0f;
             border-radius: 5px;
             background-color: #fff;
-            color: #017a07;
+            color: #a90f0f;
             font-size: 16px;
             cursor: pointer;
         }
 
         .filter-form input[type="submit"] {
-            background-color: #017a07;
+            background-color: #a90f0f;
             color: #fff;
-            border-color: #017a07;
+            border-color: #a90f0f;
         }
 
         .filter-form select:focus,
         .filter-form input[type="submit"]:hover {
-            background-color: #016106;
-            border-color: #016106;
+            background-color: #FFF;
+            border-color: #a90f0f;`
             color: #fff;
         }
 
@@ -143,10 +144,28 @@
             white-space: nowrap;
             z-index: 999;
         }
+        
+        /* Styles for Live Search */
+        .live-search-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .live-search-container label {
+            margin-right: 10px;
+        }
+        
+        .live-search-container input[type="text"] {
+            padding: 8px 15px;
+            border: 1px solid #a90f0f;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
     </style>
 </head>
 <body>
-    <h2>DATA Entry Class Schedule</h2>
+    <h2>DigiLearner Class Schedule</h2>
     <div class="container">
         <div class="current-time-container">
             <div id="current-date"></div>
@@ -156,6 +175,13 @@
         <!-- Upcoming Classes Table -->
         <div class="table-container">
             <div class="table-header">Upcoming Classes</div>
+            <!-- Live Search -->
+            <div class="live-search-container">
+                <input type="text" id="live-search" placeholder="Search">
+            </div>
+
+            
+            
             <table class="upcoming-classes">
                 <!-- Table headers here -->
                 <thead>
@@ -171,68 +197,78 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php
-                    // Database configuration
-                    $host = 'localhost'; // Database host
-                    $dbname = 'data-class'; // Database name
-                    $username = 'root'; // Database username
-                    $password = ''; // Database password
-        
-                    try {
-                        // Create a PDO database connection
-                        $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
-        
-                        // Set the PDO error mode to exception
-                        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        
-                        // Determine the current page for upcoming classes
-                        $upcomingPage = isset($_GET['upcoming_page']) ? $_GET['upcoming_page'] : 1;
-                        $upcomingPerPage = 10;
-                        $upcomingOffset = ($upcomingPage - 1) * $upcomingPerPage;
-        
-                        // Get the current date in the format matching your database date format
-                        $currentDate = date("Y-m-d");
-        
-                        // Query to retrieve upcoming class schedule data with pagination, ordered by id in descending order
-                        $sql = "SELECT *, DATE_FORMAT(class_date, '%d %M, %Y') as formatted_class_date, DATE_FORMAT(class_time, '%h:%i %p') as formatted_class_time, DATE_FORMAT(class_date, '%W') as class_day FROM class_schedule WHERE is_finished = 0 ORDER BY id DESC LIMIT :limit OFFSET :offset";
-                        $stmt = $pdo->prepare($sql);
-                        $stmt->bindParam(':limit', $upcomingPerPage, PDO::PARAM_INT);
-                        $stmt->bindParam(':offset', $upcomingOffset, PDO::PARAM_INT);
-                        $stmt->execute();
-                        $upcomingClassSchedules = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        
-                        // Count total upcoming records for pagination
-                        $sqlCount = "SELECT COUNT(*) FROM class_schedule WHERE is_finished = 0";
-                        $totalUpcomingRecords = $pdo->query($sqlCount)->fetchColumn();
-                        $totalUpcomingPages = ceil($totalUpcomingRecords / $upcomingPerPage);
-        
-                        $counter = 1; // Initialize a counter for serial number
-                        foreach ($upcomingClassSchedules as $schedule) :
-                            // Check if the schedule's date matches the current date
-                            $scheduleDate = $schedule['class_date'];
-                            $isToday = ($scheduleDate == $currentDate);
-        
-                            // Apply red and bold styles if it's today's date
-                            $classTopic = $schedule['class_topics'];
-                            ?>
-                            <tr <?php if ($isToday) echo 'style="color: red; font-weight: bold;"'; ?>>
-                                <td><?php echo $counter; ?></td> <!-- Display the serial number -->
-                                <td><?php echo $schedule['course_name']; ?></td>
-                                <td><?php echo $schedule['batch_name']; ?></td>
-                                <td><?php echo $schedule['instructor']; ?></td>
-                                <td class="class-number" data-topic="<?php echo htmlspecialchars($classTopic); ?>"><?php echo $schedule['class_no']; ?></td>
-                                <td><?php echo $schedule['formatted_class_time']; ?></td>
-                                <td><?php echo $schedule['formatted_class_date']; ?></td>
-                                <td><?php echo $schedule['class_day']; ?></td>
-                            </tr>
-                            <?php
-                            $counter++; // Increment the counter for the next row
-                        endforeach;
-                    } catch (PDOException $e) {
-                        // Handle database errors
-                        echo 'Error: ' . $e->getMessage();
+                <?php
+                include 'db.php';
+                
+                
+                // Bangla day names array
+                $banglaDays = array(
+                    "Sunday" => "রবিবার",
+                    "Monday" => "সোমবার",
+                    "Tuesday" => "মঙ্গলবার",
+                    "Wednesday" => "বুধবার",
+                    "Thursday" => "বৃহস্পতিবার",
+                    "Friday" => "শুক্রবার",
+                    "Saturday" => "শনিবার"
+                );
+
+
+                try {
+                    $upcomingPage = isset($_GET['upcoming_page']) ? $_GET['upcoming_page'] : 1;
+                    $upcomingPerPage = 10;
+                    $upcomingOffset = ($upcomingPage - 1) * $upcomingPerPage;
+
+                    $currentDate = date("Y-m-d");
+
+                    $sql = "SELECT *,
+                           DATE_FORMAT(class_date, '%d %M, %Y') as formatted_class_date,
+                           DATE_FORMAT(class_time, '%h:%i %p') as formatted_class_time,
+                           DATE_FORMAT(class_date, '%W') as class_day,
+                           CASE 
+                               WHEN class_date = CURDATE() THEN 1
+                               ELSE 0
+                           END AS is_today
+                    FROM class_schedule 
+                    WHERE is_finished = 0 
+                    ORDER BY is_today DESC, class_date ASC, class_time ASC 
+                    LIMIT :limit OFFSET :offset";
+                    $stmt = $pdo->prepare($sql);
+                    $stmt->bindParam(':limit', $upcomingPerPage, PDO::PARAM_INT);
+                    $stmt->bindParam(':offset', $upcomingOffset, PDO::PARAM_INT);
+                    $stmt->execute();
+                    $upcomingClassSchedules = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                    $sqlCount = "SELECT COUNT(*) FROM class_schedule WHERE is_finished = 0";
+                    $totalUpcomingRecords = $pdo->query($sqlCount)->fetchColumn();
+                    $totalUpcomingPages = ceil($totalUpcomingRecords / $upcomingPerPage);
+
+                    $counter = 1;
+                    foreach ($upcomingClassSchedules as $schedule) {
+                        $scheduleDate = $schedule['class_date'];
+                        $isToday = ($scheduleDate == $currentDate);
+
+                        $classTopic = $schedule['class_topics'];
+                        
+                        // Convert class day to Bangla
+                        $classDay = $banglaDays[$schedule['class_day']];
+                        ?>
+                        <tr <?php if ($isToday) echo 'style="color: green; font-weight: bold;"'; ?>>
+                            <td><?php echo $counter; ?></td>
+                            <td><?php echo $schedule['course_name']; ?></td>
+                            <td><?php echo $schedule['batch_name']; ?></td>
+                            <td><?php echo $schedule['instructor']; ?></td>
+                            <td class="class-number" data-topic="<?php echo htmlspecialchars($classTopic); ?>"><?php echo $schedule['class_no']; ?></td>
+                            <td><?php echo $schedule['formatted_class_time']; ?></td>
+                            <td><?php echo $schedule['formatted_class_date']; ?></td>
+                            <td><?php echo $classDay; ?></td>
+                        </tr>
+                        <?php
+                        $counter++;
                     }
-                    ?>
+                } catch (PDOException $e) {
+                    echo 'Error: ' . $e->getMessage();
+                }
+                ?>
                 </tbody>
             </table>
             <!-- Pagination for Upcoming Classes -->
@@ -436,6 +472,34 @@
 
         // Initial update
         updateLiveTime();
+        
+        // JavaScript code for live search
+        document.addEventListener("DOMContentLoaded", function () {
+            const liveSearchInput = document.getElementById('live-search');
+            liveSearchInput.addEventListener('input', function () {
+                const searchTerm = this.value.toLowerCase().trim();
+                const upcomingClassRows = document.querySelectorAll('.upcoming-classes tbody tr');
+        
+                upcomingClassRows.forEach(row => {
+                    const courseName = row.cells[1].textContent.toLowerCase();
+                    const batchName = row.cells[2].textContent.toLowerCase();
+                    const instructorName = row.cells[3].textContent.toLowerCase();
+                    const classNumber = row.cells[4].textContent.toLowerCase();
+                    const classTime = row.cells[5].textContent.toLowerCase();
+                    const classDate = row.cells[6].textContent.toLowerCase();
+                    const classDay = row.cells[7].textContent.toLowerCase();
+        
+                    if (courseName.includes(searchTerm) || batchName.includes(searchTerm) || instructorName.includes(searchTerm) ||
+                        classNumber.includes(searchTerm) || classTime.includes(searchTerm) || classDate.includes(searchTerm) ||
+                        classDay.includes(searchTerm)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            });
+        });
+
     </script>
 </body>
 </html>
